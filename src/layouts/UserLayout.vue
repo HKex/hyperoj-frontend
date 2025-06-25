@@ -1,8 +1,11 @@
 <template>
-  <div id="basicLayout">
+  <div id="userLayout">
     <a-layout style="min-height: 100vh">
       <a-layout-header class="header">
-        <GlobalHeader />
+        <a-space>
+          <img src="../assets/logo.png" class="logo" />
+          <div>HyperOJ</div>
+        </a-space>
       </a-layout-header>
       <a-layout-content class="content">
         <router-view />
@@ -14,22 +17,25 @@
   </div>
 </template>
 <style scoped>
-#basicLayout {
-  height: 100%;
+#userLayout {
+  text-align: center;
 }
 
-#basicLayout .header {
+#userLayout .logo {
+  height: 64px;
+  margin: 64px;
+}
+
+#userLayout .header {
+  margin-top: 16px;
+}
+
+#userLayout .content {
   margin-bottom: 16px;
-  box-shadow: #eee 1px 1px 5px;
-}
-
-#basicLayout .content {
-  background: linear-gradient(to right, #aaa, #fff);
   padding: 20px;
 }
 
-#basicLayout .footer {
-  background: #efefef;
+#userLayout .footer {
   padding: 16px;
   position: sticky;
   bottom: 0;
@@ -38,6 +44,4 @@
   text-align: center;
 }
 </style>
-<script setup lang="ts">
-import GlobalHeader from "@/components/GlobalHeader.vue";
-</script>
+<script setup lang="ts"></script>
