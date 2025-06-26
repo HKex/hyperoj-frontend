@@ -97,15 +97,13 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, Ref } from "vue";
+import { onMounted, reactive, ref, Ref } from "vue";
 import MDEditor from "@/components/MDEditor.vue";
-import {
-  QuestionAddRequest,
-  QuestionControllerService,
-} from "../../../generated";
+import { QuestionControllerService } from "../../../generated";
 import message from "@arco-design/web-vue/es/message";
+import { useRoute } from "vue-router";
 
-const form = reactive<Ref<QuestionAddRequest>>({
+const form = ref({
   title: "",
   content: "",
   answer: "",
@@ -123,26 +121,91 @@ const form = reactive<Ref<QuestionAddRequest>>({
   tags: [],
 });
 
+const route = useRoute();
+//如果路径包含update，则表示更新
+const isUpdate = route.path.includes("update");
+/**
+ * 加载数据
+ */
+const loadData = async () => {
+  const id = route.query.id;
+  if (!id) {
+    return;
+  }
+  const res = await QuestionControllerService.getQuestionByIdUsingGet(id);
+  if (res.code === 0) {
+    form.value = res.data as any;
+    //json 转js对象
+    if (!form.value.judgeCase) {
+      form.value.judgeCase = [
+        {
+          input: "",
+          output: "",
+        },
+      ];
+    } else {
+      form.value.judgeCase = JSON.parse(res.data.judgeCase as any);
+    }
+    if (!form.value.judgeConfig) {
+      form.value.judgeConfig = [
+        {
+          timeLimit: 1000,
+          memoryLimit: 1000,
+          stackLimit: 1000,
+        },
+      ];
+    } else {
+      form.value.judgeConfig = JSON.parse(res.data.judgeConfig as any);
+    }
+    if (!form.value.tags) {
+      form.value.tags = [];
+    } else {
+      form.value.tags = JSON.parse(res.data.tags as any);
+    }
+  } else {
+    message.error("加载失败" + res.message);
+  }
+};
+
+onMounted(() => {
+  loadData();
+});
+
 /**
  * 内容改变
  * @param value
  */
 const onContentChange = (value: string) => {
-  form.content = value;
+  form.value.content = value;
 };
 const onAnswerChange = (value: string) => {
-  form.answer = value;
+  form.value.answer = value;
 };
 
 /**
  * 提交
  */
 const doSubmit = async () => {
-  const res = await QuestionControllerService.addQuestionUsingPost(form);
-  if (res.code === 0) {
-    message.success("添加成功");
+  if (isUpdate) {
+    //更新
+    const res = await QuestionControllerService.updateQuestionUsingPost(
+      form.value
+    );
+    if (res.code === 0) {
+      message.success("更新成功");
+    } else {
+      message.error("更新失败" + res.message);
+    }
   } else {
-    message.error("添加失败" + res.message);
+    //添加
+    const res = await QuestionControllerService.addQuestionUsingPost(
+      form.value
+    );
+    if (res.code === 0) {
+      message.success("添加成功");
+    } else {
+      message.error("添加失败" + res.message);
+    }
   }
 };
 
@@ -150,7 +213,7 @@ const doSubmit = async () => {
  * 新增测试用例
  */
 const caseAdd = () => {
-  form.judgeCase.push({
+  form.value.judgeCase.push({
     input: "",
     output: "",
   });
@@ -161,7 +224,7 @@ const caseAdd = () => {
  * @param index
  */
 const caseDelete = (index: number) => {
-  form.judgeCase.splice(index, 1);
+  form.value.judgeCase.splice(index, 1);
 };
 </script>
 
