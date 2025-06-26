@@ -9,8 +9,9 @@
         showTotal: true,
         total: total,
         pageSize: pageParam.pageSize,
-        current: pageParam.pageNum,
+        current: pageParam.current,
       }"
+      @page-change="onPageChange"
     >
       <template #operator="{ record }">
         <a-space>
@@ -23,7 +24,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watchEffect } from "vue";
 import { Question, QuestionControllerService } from "../../../generated";
 import message from "@arco-design/web-vue/es/message";
 import { useRouter } from "vue-router";
@@ -74,8 +75,8 @@ const columns = [
 const datalist = ref([]);
 const total = ref(0);
 const pageParam = ref({
-  pageSize: 10,
-  pageNum: 1,
+  pageSize: 2,
+  current: 1,
 });
 const router = useRouter();
 const tableRef = ref();
@@ -117,6 +118,24 @@ const doDelete = async (question: Question) => {
     message.error("删除失败：", res.message);
   }
 };
+
+/**
+ * 分页切换
+ * @param page
+ */
+const onPageChange = (page: number) => {
+  pageParam.value = {
+    ...pageParam.value,
+    current: page,
+  };
+};
+
+/**
+ * 监听分页参数，改变时重新调用
+ */
+watchEffect(() => {
+  getQuestionVOList();
+});
 
 /**
  * 页面加载时操作
