@@ -14,7 +14,7 @@ const checkAccess = (loginUser: any, needAccess = ACCESS_ENUM.NOT_LOGIN) => {
   }
   //若需要登录才访问
   if (needAccess === ACCESS_ENUM.USER) {
-    if (loginUserAccess !== ACCESS_ENUM.NOT_LOGIN) {
+    if (loginUserAccess === ACCESS_ENUM.NOT_LOGIN) {
       return false;
     }
   }
