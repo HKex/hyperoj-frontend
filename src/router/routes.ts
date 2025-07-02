@@ -10,6 +10,7 @@ import AddQuestionView from "@/views/question/AddQuestionView.vue";
 import ManageQuestionView from "@/views/question/ManageQuestionView.vue";
 import ListQuestionView from "@/views/question/ListQuestionView.vue";
 import QuestionView from "@/views/question/QuestionView.vue";
+import ListQuestionSubmitView from "@/views/question/ListQuestionSubmitView.vue";
 
 export const routes: Array<RouteRecordRaw> = [
   {
@@ -19,7 +20,6 @@ export const routes: Array<RouteRecordRaw> = [
     meta: {
       hideInMenu: true,
     },
-    children: [],
   },
   {
     path: "/user",
@@ -109,6 +109,11 @@ export const routes: Array<RouteRecordRaw> = [
       access: ACCESS_ENUM.USER,
       hideInMenu: true,
     },
+  },
+  {
+    path: "/questionSubmit/list",
+    name: "提交记录列表",
+    component: ListQuestionSubmitView,
   },
   // {
   //   path: "/about",
