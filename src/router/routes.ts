@@ -10,6 +10,7 @@ import ListQuestionView from "@/views/question/ListQuestionView.vue";
 import QuestionView from "@/views/question/QuestionView.vue";
 import ListQuestionSubmitView from "@/views/question/ListQuestionSubmitView.vue";
 import UserHomeView from "@/views/user/UserHomeView.vue";
+import NoAuthView from "@/views/NoAuthView.vue";
 
 export const routes: Array<RouteRecordRaw> = [
   {
