@@ -26,6 +26,7 @@
       :ref="tableRef"
       :columns="columns"
       :data="datalist"
+      :default-sort="{ field: 'id', direction: 'descend' }"
       :pagination="{
         showTotal: true,
         total: total,
@@ -49,8 +50,11 @@ import { useRouter } from "vue-router";
 
 const columns = [
   {
-    title: "题号",
+    title: "提交编号",
     dataIndex: "id",
+    sortable: {
+      sortDirections: ["descend"],
+    },
   },
   {
     title: "语言",

@@ -29,7 +29,7 @@
 
 <script setup lang="ts">
 import { routes } from "@/router/routes";
-import { useRoute, useRouter } from "vue-router";
+import { useRouter } from "vue-router";
 import { computed, ref } from "vue";
 import { useStore } from "vuex";
 import checkAccess from "@/access/checkAccess";
@@ -55,7 +55,7 @@ const visibleRoutes = computed(() => {
 
 setTimeout(() => {
   store.dispatch("user/getLoginUser", {
-    userName: "喆",
+    userName: "admin",
     userRole: ACCESS_ENUM.ADMIN,
   });
 }, 3000);

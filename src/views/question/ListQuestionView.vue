@@ -56,7 +56,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive, ref, watchEffect } from "vue";
+import { onMounted, ref, watchEffect } from "vue";
 import {
   QuestionControllerService,
   QuestionQueryRequest,
@@ -125,7 +125,7 @@ const getQuestionVOList = async () => {
   if (res.code === 0) {
     console.log(res);
     datalist.value = res.data.records;
-    total.value = res.data.total;
+    total.value = res.data.records.length;
   } else {
     message.error("查询失败：", res.message);
   }
